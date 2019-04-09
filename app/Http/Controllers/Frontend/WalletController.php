@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Frontend;
 
 use Auth;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests\WalletRequest;
+use App\Http\Requests\TransferRequest;
 use App\Http\Controllers\Controller;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\Wallet\WalletRepositoryInterface;
+use App\Repositories\Transaction\TransactionEloquentRepository;
 
 
 class WalletController extends Controller
@@ -17,13 +20,15 @@ class WalletController extends Controller
     */
     protected $user;
     protected $wallet;
+    protected $transaction;
 
 
-    public function __construct(UserRepositoryInterface $user, WalletRepositoryInterface $wallet)
+    public function __construct(UserRepositoryInterface $user, WalletRepositoryInterface $wallet, 
+                                TransactionEloquentRepository $transaction)
     {
         $this->user = $user;
         $this->wallet = $wallet;
-
+        $this->transaction = $transaction;
     }  
     /**
      * Display a listing of the resource.
@@ -124,8 +129,17 @@ class WalletController extends Controller
         return view('wallets.transfer', ['wallets' => $wallets]);
     }
 
-    public function postTransfer()
+    public function postTransfer(TransferRequest $req)
     {
+        $this->wallet->updateMoneyTransfer($req);
+        $this->transaction->createTransfer($req);
+        return redirect()->route('wallets.index')->with('success', 'Giao dịch thành công');
+    }
 
+    public function changeTransfer(Request $req)
+    {
+        $wallets = $this->wallet->changeTransferWallet($req);
+        return response()->json($wallets)
+                         ->header('Content-Type', 'JSON');
     }  
 }

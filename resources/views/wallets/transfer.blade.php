@@ -13,14 +13,16 @@ Giao dịch chuyển tiền
                         <p style="text-align: center;"><span class="error">* required field</span></p>
                     </div>
                     <input type="hidden" name="id" value="{{ Auth::user()->id }}">
-                    <div class="form-group{{ $errors->has('from_wallet') ? ' has-error' : '' }}">
+                    <div class="form-group{{ $errors->has('from_wallet') ? ' has-error' : '' }}" if="from_trans">
                         <label for="from_wallet" class="col-md-4 control-label">Ví chuyển tiền<span class="error">*</span></label>
 
                         <div class="col-md-6">
                             <select class="selectpicker form-control" name="from_wallet" id="from_wallet" required>
-                                <option selected value="">Chọn</option>
+                                <option selected value="">Chọn ví chuyển đi</option>
                                 @foreach($wallets as $wallet)
-                                    <option value="{{ $wallet->id }}" >{{ $wallet->name.'-'.$wallet->ssid }}</option>
+                                    <option value="{{ $wallet->id }}" @if ($wallet->id == old('from_wallet'))
+                                        selected 
+                                    @endif>{{ $wallet->name.'-'.$wallet->ssid }}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('from_wallet'))
@@ -29,34 +31,30 @@ Giao dịch chuyển tiền
                                 </span>
                             @endif
                         </div>
-                    </div>
-                    <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}" id="to_me">
-                        <label for="type" class="col-md-4 control-label">Thể loại chuyển tiền<span class="error">*</span></label>
-
-                        <div class="col-md-6">
-                            <select class="selectpicker form-control" name="type" id="type" required>
-                                <option selected value="">Chọn ví chuyển tiền trước </option>
-                                <option selected value="">Chọn ví chuyển tiền trước </option>
-                                <option selected value="">Chọn ví chuyển tiền trước </option>
-                                
-                            </select>
-                            @if ($errors->has('type'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('type') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div>    
-                    <div class="form-group{{ $errors->has('to_wallet') ? ' has-error' : '' }}" id="to_me">
+                    </div>                       
+                    <div class="form-group{{ $errors->has('to_wallet') ? ' has-error' : '' }}" id="to_trans">
                         <label for="to_wallet" class="col-md-4 control-label">Ví nhận tiền<span class="error">*</span></label>
 
                         <div class="col-md-6">
                             <select class="selectpicker form-control" name="to_wallet" id="to_wallet" required>
-                                <option selected value="">Chọn ví chuyển tiền trước </option>
+                                <option selected value="">Chọn ví chuyển đi trước </option>
                             </select>
                             @if ($errors->has('to_wallet'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('to_wallet') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group{{ $errors->has('money_from') ? ' has-error' : '' }}" id="so_du">
+                        <label for="money_from" class="col-md-4 control-label">Số dư tài khoản <span class="error">*</span></label>
+
+                        <div class="col-md-6">
+                            <input type="number" class="form-control" name="money_from" id="money_from" value="" disabled>
+
+                            @if ($errors->has('money_from'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('money_from') }}</strong>
                                 </span>
                             @endif
                         </div>
@@ -113,25 +111,31 @@ Giao dịch chuyển tiền
 @endsection
 @section('js')
 <script type="text/javascript">
+   
     $(document).ready(function () {
-    $("select[name='from_wallet']").on('change',function(){
-        var from_wallet = $(this).val();
-        if(from_wallet != 0){
-            $.ajax({
-                type:'POST',
-                headers: {
-                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                url:'/trasfer/change',
-                data:'from_wallet='+from_wallet,
-                success:function(html){
-                    $('#to_wallet').html(html); 
-                }
-            }); 
-        }else{
-            $('#to_wallet').html('<option value="">Chọn danh tài khoản chuyển đến trước</option>');
-        }
-    });
+        $("#so_du").hide();
+        $("select[name='from_wallet']").on('change',function() {
+            var from_wallet = $(this).val();  
+            if(from_wallet != 0){
+                $.ajax({
+                    type:'POST',
+                    headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                    dataType   :'JSON',
+                    url:'/transfer/change/user',
+                    data:{id: {{ Auth::id() }} ,from_wallet: from_wallet},
+                    success:function(result){
+                        $("#so_du").show();
+                        console.log(result);
+                        $('#money_from').val(result[1]);
+                        $('#to_wallet').html(result[0]);
+                    }
+                }); 
+            }else{
+                $('#to_wallet').html('<option value="">Chọn ví chuyển đi trước </option>');
+            }
+        });
 
 });
 </script>

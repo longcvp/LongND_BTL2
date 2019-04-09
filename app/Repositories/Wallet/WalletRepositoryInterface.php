@@ -12,4 +12,9 @@ interface WalletRepositoryInterface
 	public function updateInfoWallet($data);
 	
 	public function deleteWallet($id);
+
+	public function changeTransferWallet($data);
+
+	public function updateMoneyTransfer($data);
+	
 }

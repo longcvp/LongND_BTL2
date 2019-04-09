@@ -6,8 +6,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\EloquentRepository;
 
-
-
 class WalletEloquentRepository extends EloquentRepository implements WalletRepositoryInterface
 {
 
@@ -43,5 +41,28 @@ class WalletEloquentRepository extends EloquentRepository implements WalletRepos
 	public function deleteWallet($id)
 	{
 		return $this->getWalletById($id)->delete();
+	}
+
+	public function changeTransferWallet($data)
+	{	
+		$wallets = $this->getWalletUser($data->id);
+		$output = '<option value="">Chọn ví chuyển đến</option>';
+		foreach($wallets as $wallet) {
+			if ($wallet->id != $data->from_wallet) {
+				$output .= '<option value="'.$wallet->id.'">'.$wallet->name.'-'.$wallet->ssid.'</option>';
+			}
+		}
+		$fromWallet =  $this->getWalletById($data->from_wallet);
+		$dataReturn = [$output, $fromWallet->money];
+
+		return $dataReturn;
+	}
+
+	public function updateMoneyTransfer($data)
+	{
+		$walletFrom = $this->_model->find($data->from_wallet);
+		$walletTo = $this->_model->find($data->to_wallet);
+		$walletFrom->update(['money' => $walletFrom->money - $data->money]);
+		$walletTo->update(['money' => ($walletTo->money + $data->money)]);		
 	}
 }

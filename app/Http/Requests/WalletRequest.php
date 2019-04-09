@@ -27,12 +27,11 @@ class WalletRequest extends FormRequest
     public function rules()
     {
         $req = request();
-        $user_id = $req->user_id;
-
+        $userId = $req->user_id;
         $code = $req->code;
         if ($req->getMethod() == 'POST') {
             return [
-                'name' => 'required|unique:wallets,name,' . $user_id . ',user_id|max:255',
+                'name' => 'required|unique:wallets,name,' . $userId . ',user_id|max:255',
                 'code' => 'required|min:4',
                 're_code' => 'required|same:code',
                 'money' => 'required|numeric|min:0',          

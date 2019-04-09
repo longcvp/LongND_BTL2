@@ -20,4 +20,9 @@ class TransactionEloquentRepository extends EloquentRepository implements Transa
         return \App\Models\Transaction::class;
     }
 
+    public function createTransfer($data)
+    {
+    	return $this->_model->createTransfer($data);
+    }
+
 }

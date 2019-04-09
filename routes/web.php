@@ -57,6 +57,21 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('transfer', 'WalletController@getTransfer')->name('wallets.transfer');
 
         Route::post('transfer', 'WalletController@postTransfer')->name('wallets.post_transfer');
+
+        Route::post('transfer/change/user', 'WalletController@changeTransfer')->name('wallets.change_transfer');
+
+        Route::get('/categories', 'CategoryController@index')->name('categories.index');
+
+        Route::get('/categories/create', 'CategoryController@create')->name('categories.create');
+
+        Route::post('/categories', 'CategoryController@store')->name('categories.store');
+
+        Route::get('categories/{wallet}/edit', 'CategoryController@edit')->name('categories.edit');
+
+        Route::patch('categories/{wallet}', 'CategoryController@update')->name('categories.update');
+
+        Route::delete('categories/{wallet}', 'CategoryController@destroy')->name('categories.destroy');
+
     });
 
 });
