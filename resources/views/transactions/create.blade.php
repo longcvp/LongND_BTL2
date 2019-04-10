@@ -1,22 +1,20 @@
 @extends('_layout.layout')
 @section('title')
-Giao dịch chuyển tiền nội bộ
+Thêm giao dịch thu chi danh mục
 @endsection
 @section('content')
 	<div class="conten-wrapper">
 		<section class="content container-fluid">
 			<div class="container">
-				<h2>Giao dịch chuyển tiền</h2>
-				<form class="form-horizontal" method="POST" action="{{ route('wallets.post_transfer') }}" enctype="multipart/form-data" >
+				<h2>Thêm giao dịch mới</h2>
+				<form class="form-horizontal" method="POST" action="{{ route('transactions.store') }}" enctype="multipart/form-data" >
                         {{ csrf_field() }}
                     <div class="form-group">
                         <p style="text-align: center;"><span class="error">* required field</span></p>
                     </div>
                     <input type="hidden" name="id" value="{{ Auth::user()->id }}">
-                    <input type="hidden" name="type" value="1">
-                    <input type="hidden" name="trans" value="1">
                     <div class="form-group{{ $errors->has('from_wallet') ? ' has-error' : '' }}" id="from_trans">
-                        <label for="from_wallet" class="col-md-4 control-label">Ví chuyển tiền<span class="error">*</span></label>
+                        <label for="from_wallet" class="col-md-4 control-label">Ví thực hiện giao dịch<span class="error">*</span></label>
 
                         <div class="col-md-6">
                             <select class="selectpicker form-control" name="from_wallet" id="from_wallet" required>
@@ -33,17 +31,32 @@ Giao dịch chuyển tiền nội bộ
                                 </span>
                             @endif
                         </div>
-                    </div>                       
-                    <div class="form-group{{ $errors->has('to_wallet') ? ' has-error' : '' }}" id="to_trans">
-                        <label for="to_wallet" class="col-md-4 control-label">Ví nhận tiền<span class="error">*</span></label>
+                    </div> 
+                    <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}" id="from_trans">
+                        <label for="type" class="col-md-4 control-label">Chọn loại danh mục giao dịch<span class="error">*</span></label>
 
                         <div class="col-md-6">
-                            <select class="selectpicker form-control" name="to_wallet" id="to_wallet" required>
-                                <option selected value="">Chọn ví chuyển đi trước </option>
+                            <select class="selectpicker form-control" name="type" id="type" required>
+                                <option selected value="">Chọn loại danh mục giao dịch</option>
+                                <option value="3">Danh mục thu</option>
+                                <option value="2">Danh mục chi</option>
                             </select>
-                            @if ($errors->has('to_wallet'))
+                            @if ($errors->has('type'))
                                 <span class="help-block">
-                                    <strong>{{ $errors->first('to_wallet') }}</strong>
+                                    <strong>{{ $errors->first('type') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div> 
+                    <div class="form-group{{ $errors->has('parent_id') ? ' has-error' : '' }}" id="root_category">
+                        <label for="parent_id" class="col-md-4 control-label">Chọn danh mục cần giao dịch<span class="error">*</span></label>
+
+                        <div class="col-md-6">
+                            <select class="selectpicker form-control" name="parent_id" id="parent_id" required>
+                            </select>
+                            @if ($errors->has('parent_id'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('parent_id') }}</strong>
                                 </span>
                             @endif
                         </div>
@@ -86,13 +99,13 @@ Giao dịch chuyển tiền nội bộ
                                 </span>
                             @endif
                         </div>
-                    </div>                                                          
+                    </div>                                   
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
                             <button type="submit" class="btn btn-primary">
-                                Chuyển tiền
+                                Tạo giao dịch
                             </button>
-							<a href="{{ route("wallets.index") }}" type="button" class="btn btn-info">Quay lại</a>
+							<a href="{{ route("categories.index") }}" type="button" class="btn btn-info">Quay lại</a>
                         </div>
 
                     </div>
@@ -115,6 +128,27 @@ Giao dịch chuyển tiền nội bộ
 <script type="text/javascript">
    
     $(document).ready(function () {
+        $("#root_category").hide();
+        $("select[name='type']").on('change',function() {
+            var type = $(this).val();  
+            if(type != 0){
+                $.ajax({
+                    type:'POST',
+                    headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                    url:'/categories/change/user',
+                    data:{user_id: {{ Auth::id() }} ,type: type, child : 1},
+                    success:function(html){
+                        $("#root_category").show();
+                        $('#parent_id').html(html);
+                    }
+                }); 
+            }else{
+                $('#parent_id').html('<option value="">Chọn thể loại danh mục thu/chi trước </option>');
+            }
+        });
+
         $("#so_du").hide();
         $("select[name='from_wallet']").on('change',function() {
             var from_wallet = $(this).val();  
@@ -126,19 +160,16 @@ Giao dịch chuyển tiền nội bộ
                         },
                     dataType   :'JSON',
                     url:'/transfer/change/user',
-                    data:{id: {{ Auth::id() }} ,from_wallet: from_wallet, type: 1},
+                    data:{id: {{ Auth::id() }} ,from_wallet: from_wallet, type : 2},
                     success:function(result){
                         $("#so_du").show();
-                        console.log(result);
                         $('#money_from').val(result[1]);
-                        $('#to_wallet').html(result[0]);
                     }
                 }); 
             }else{
-                $('#to_wallet').html('<option value="">Chọn ví chuyển đi trước </option>');
+                $("#so_du").hide();
             }
         });
-
 });
 </script>
 @endsection

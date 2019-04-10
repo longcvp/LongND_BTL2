@@ -5,9 +5,8 @@ namespace App\Http\Requests;
 use Hash;
 use App\Models\Wallet;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Rules\CheckSsidRule;
 
-class TransferRequest extends FormRequest
+class TransactionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,32 +31,16 @@ class TransferRequest extends FormRequest
         $code = $req->code;
         $codeCheck = $data->code;
         $money = $data->money;
-        $ssid = $req->ssid;
-        if ($req->type == 1) {
-            return [
-                'code' => ['required',function ($attribute, $code, $fail) use ($codeCheck) {
+        return [
+            'code' => ['required',function ($attribute, $code, $fail) use ($codeCheck) {
                                         if (! Hash::check($code, $codeCheck)) {
                                             $fail('Mã bí mật không đúng');
                                         }
                                     }],
-                'from_wallet' => 'required',
-                'to_wallet' => 'required',
-                'money' => 'required|numeric|min:0|max:' . $money,
-            ];
-        } else {
-            return [
-                'code' => ['required', function ($attribute, $code, $fail) use ($codeCheck) {
-                                        if (! Hash::check($code, $codeCheck)) {
-                                            $fail('Mã bí mật không đúng');
-                                        }
-                                    }],
-                'from_wallet' => 'required',
-                'ssid' => ['required', 'digits:12', new CheckSsidRule($ssid)],
-                'money' => 'required|numeric|min:0|max:' . $money,
-            ];
-        }
-        
-
+            'parent_id' => 'required',
+            'type' => 'required',
+            'money' => 'required|numeric|min:0|max:' . $money,
+        ];
     }
 
     public function messages()
@@ -66,7 +49,7 @@ class TransferRequest extends FormRequest
             'name.required '=> 'Tên ví không được để trống',
             'name.unique' => 'Tên ví đã tồn tại',
             'code.required' => 'Mã bí mật không được để trống',
-            'ssid.required' => 'Mã bí mật không được để trống',
+            'parent_id.required' => 'Danh mục giao dịch không được để trống',
             'ssid.digits' => 'Mã bí mật là số có 12 kí tự',
             'money.required' => 'Số tiền không được để trống',
             'money.numeric' => 'Số tiền phải là số',

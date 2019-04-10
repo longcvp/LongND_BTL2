@@ -1,20 +1,20 @@
 @extends('_layout.layout')
 @section('title')
-Tạo ví
+Tạo danh mục cá nhân
 @endsection
 @section('content')
 	<div class="conten-wrapper">
 		<section class="content container-fluid">
 			<div class="container">
-				<h2>Tạo ví cá nhân</h2>
+				<h2>Tạo danh mục cá nhân</h2>
 				<form class="form-horizontal" method="POST" action="{{ route('categories.store') }}" enctype="multipart/form-data" >
                         {{ csrf_field() }}
                     <div class="form-group">
                         <p style="text-align: center;"><span class="error">* required field</span></p>
                     </div>
-                    <input type="hidden" name="id" value="{{ Auth::user()->id }}">
+                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                     <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                        <label for="name" class="col-md-4 control-label">Tên ví <span class="error">*</span></label>
+                        <label for="name" class="col-md-4 control-label">Tên danh mục <span class="error">*</span></label>
 
                         <div class="col-md-6">
                             <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
@@ -25,50 +25,40 @@ Tạo ví
                                 </span>
                             @endif
                         </div>
-                    </div>   
-                    <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
-                        <label for="code" class="col-md-4 control-label">Mã bí mật <span class="error">*</span></label>
+                    </div> 
+                    <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}" id="from_trans">
+                        <label for="type" class="col-md-4 control-label">Chọn loại danh mục<span class="error">*</span></label>
 
                         <div class="col-md-6">
-                            <input id="code" type="password" class="form-control" name="code" value="{{ old('code') }}" required autofocus>
-
-                            @if ($errors->has('code'))
+                            <select class="selectpicker form-control" name="type" id="type" required>
+                                <option selected value="">Chọn loại danh mục</option>
+                                <option value="3">Danh mục thu</option>
+                                <option value="2">Danh mục chi</option>
+                            </select>
+                            @if ($errors->has('type'))
                                 <span class="help-block">
-                                    <strong>{{ $errors->first('code') }}</strong>
+                                    <strong>{{ $errors->first('type') }}</strong>
                                 </span>
                             @endif
                         </div>
                     </div> 
-                    <div class="form-group{{ $errors->has('re_code') ? ' has-error' : '' }}">
-                        <label for="re_code" class="col-md-4 control-label">Nhập lại mã bí mật <span class="error">*</span></label>
+                    <div class="form-group{{ $errors->has('parent_id') ? ' has-error' : '' }}" id="root_category">
+                        <label for="parent_id" class="col-md-4 control-label">Chọn danh mục cha<span class="error">*</span></label>
 
                         <div class="col-md-6">
-                            <input id="re_code" type="password" class="form-control" name="re_code" value="{{ old('re_code') }}" required autofocus>
-
-                            @if ($errors->has('re_code'))
+                            <select class="selectpicker form-control" name="parent_id" id="parent_id" required>
+                            </select>
+                            @if ($errors->has('parent_id'))
                                 <span class="help-block">
-                                    <strong>{{ $errors->first('re_code') }}</strong>
+                                    <strong>{{ $errors->first('parent_id') }}</strong>
                                 </span>
                             @endif
                         </div>
-                    </div> 
-                    <div class="form-group{{ $errors->has('money') ? ' has-error' : '' }}">
-                        <label for="money" class="col-md-4 control-label">Số tiền trong ví <span class="error">*</span></label>
-
-                        <div class="col-md-6">
-                            <input id="money" type="number" mim = "0" step="10000" class="form-control" name="money" value="{{ old('money') }}" required autofocus>
-
-                            @if ($errors->has('money'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('money') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div>                                      
+                    </div>                                  
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
                             <button type="submit" class="btn btn-primary">
-                                Tạo ví
+                                Tạo danh mục
                             </button>
 							<a href="{{ route("categories.index") }}" type="button" class="btn btn-info">Quay lại</a>
                         </div>
@@ -88,4 +78,32 @@ Tạo ví
         color: red;
     }
 </style>
+@endsection
+@section('js')
+<script type="text/javascript">
+   
+    $(document).ready(function () {
+        $("#root_category").hide();
+        $("select[name='type']").on('change',function() {
+            var type = $(this).val();  
+            if(type != 0){
+                $.ajax({
+                    type:'POST',
+                    headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                    url:'/categories/change/user',
+                    data:{user_id: {{ Auth::id() }} ,type: type},
+                    success:function(html){
+                        $("#root_category").show();
+                        $('#parent_id').html(html);
+                    }
+                }); 
+            }else{
+                $('#parent_id').html('<option value="">Chọn thể loại danh mục thu/chi trước </option>');
+            }
+        });
+
+});
+</script>
 @endsection

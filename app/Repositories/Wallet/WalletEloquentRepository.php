@@ -60,9 +60,29 @@ class WalletEloquentRepository extends EloquentRepository implements WalletRepos
 
 	public function updateMoneyTransfer($data)
 	{
+		$toWalletId = 0;
+        if ($data->trans == OUT) {
+            $wallet = $this->_model->getWalletBySSID($data->ssid);
+            $toWalletId = $wallet->id;
+        } else {
+            $toWalletId = $data->to_wallet;
+        }
 		$walletFrom = $this->_model->find($data->from_wallet);
-		$walletTo = $this->_model->find($data->to_wallet);
+		$walletTo = $this->_model->find($toWalletId);
 		$walletFrom->update(['money' => $walletFrom->money - $data->money]);
-		$walletTo->update(['money' => ($walletTo->money + $data->money)]);		
+		$walletTo->update(['money' => ($walletTo->money + $data->money)]);
+		return $toWalletId;		
+	}
+
+	public function updateMoneyTransaction($data)
+	{
+		if ($data->type == THU) {
+			$walletFrom = $this->_model->find($data->from_wallet);
+			$walletFrom->update(['money' => $walletFrom->money + $data->money]);
+		} else {
+			$walletFrom = $this->_model->find($data->from_wallet);
+			$walletFrom->update(['money' => $walletFrom->money - $data->money]);
+		}
+		
 	}
 }

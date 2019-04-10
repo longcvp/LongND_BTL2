@@ -32,11 +32,11 @@ class AuthController extends Controller
 
     public function getLogin()
     {
-		if (!Auth::check()) {
-			return view('auth.login');
-		} else {
-			return redirect()->route('users.index');
-		}
+        if (!Auth::check()) {
+            return view('auth.login');
+        } else {
+            return redirect()->route('users.index');
+        }
     }
 
     public function postLogin(LoginRequest $req)

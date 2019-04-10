@@ -45,11 +45,11 @@ class Wallet extends Model
 
     public function getSSID()
     {
-        return '1000 ' . rand(1000,9999) . ' ' .rand(1000,9999);
+        return '1000' . rand(1000,9999).rand(1000,9999);
     }
 
     public function getWalletBySSID($ssid)
     {
-        return $this->where('ssid', $ssid)->count();
+        return $this->where('ssid', $ssid)->first();
     }
 }

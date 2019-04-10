@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\CheckNameRule;
 
 class CategoryRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class CategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +25,25 @@ class CategoryRequest extends FormRequest
      */
     public function rules()
     {
+        $req = request();
+        $userId = $req->user_id;
+        $cateId = is_null($req->id) ? 0 : $req->id;
+
         return [
-            //
+            'name' => ['required', new CheckNameRule($userId, $cateId)],
+            'type' => 'required',
+            'parent_id' => 'required'
         ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'Tên danh mục không được để trống',
+            'name.max' => 'Tên danh mục tối đa 255 kí tự',
+            'name.unique' => 'Tên danh mục đã tồn tại',
+            'name.type' => 'Tên danh mục không được để trống',
+            'name.parent_id' => 'Tên danh mục không được để trống'
+        ];        
     }
 }

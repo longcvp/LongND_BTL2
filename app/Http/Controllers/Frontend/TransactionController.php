@@ -2,11 +2,33 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use Auth;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
+use App\Http\Requests\WalletRequest;
+use App\Http\Requests\TransactionRequest;
 use App\Http\Controllers\Controller;
+use App\Repositories\User\UserRepositoryInterface;
+use App\Repositories\Wallet\WalletRepositoryInterface;
+use App\Repositories\Transaction\TransactionRepositoryInterface;
 
 class TransactionController extends Controller
 {
+    /**
+     * repository
+     */
+    protected $user;
+    protected $wallet;
+    protected $transaction;
+
+
+    public function __construct(UserRepositoryInterface $user, WalletRepositoryInterface $wallet, 
+                                TransactionRepositoryInterface $transaction)
+    {
+        $this->user = $user;
+        $this->wallet = $wallet;
+        $this->transaction = $transaction;
+    }  
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +36,8 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+        $transactions = $this->transaction->getTransactionUser(Auth::id());
+        return view('transactions.index', ['transactions' => $transactions]);
     }
 
     /**
@@ -24,7 +47,8 @@ class TransactionController extends Controller
      */
     public function create()
     {
-        //
+        $wallets = $this->wallet->getWalletUser(Auth::id());
+        return view('transactions.create', ['wallets' => $wallets]);
     }
 
     /**
@@ -33,9 +57,11 @@ class TransactionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TransactionRequest $request)
     {
-        //
+        $this->wallet->updateMoneyTransaction($request);
+        $this->transaction->createTransfer($request);
+        return redirect()->route('transactions.index')->with('success', 'Giao dịch thành công');
     }
 
     /**
@@ -57,7 +83,7 @@ class TransactionController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -80,6 +106,12 @@ class TransactionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $transaction = $this->transaction->find($id);
+        if ($transaction->user_id != Auth::id()) {
+           return redirect()->back();
+        } else {
+            $this->transaction->find($id)->delete();
+            return redirect()->route('transactions.index')->with('success', 'Xóa giao dịch thành công');
+        }
     }
 }

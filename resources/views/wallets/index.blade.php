@@ -1,6 +1,6 @@
 @extends('_layout.layout')
 @section('title')
-Quản lý ví các nhân
+Quản lý ví cá nhân
 @endsection
 @section('content')
 <div class="conten-wrapper">
@@ -16,12 +16,15 @@ Quản lý ví các nhân
         </div>
         @endif
     	<div class="container">
-    		<h2>Quản lý ví cá nhân</h2>
+    		<h2>Quản lý ví cá nhân của {{ Auth::user()->name }}</h2>
 			<hr>
 			<a href="{{ route('wallets.create') }}" type="button" class="btn btn-primary">Tạo ví mới</a>
 			<hr>
-            <a href="{{ route('wallets.transfer') }}" type="button" class="btn btn-success" ><span class="glyphicon glyphicon-share-alt"></span> Thực hiện chuyển tiền</a>
+            @if(count($wallets) != 0)
+            <a href="{{ route('wallets.transfer', IN) }}" type="button" class="btn btn-success" ><span class="glyphicon glyphicon-share-alt"></span> Chuyển tiền nội bộ</a>
+            <a href="{{ route('wallets.transfer', OUT ) }}" type="button" class="btn btn-danger" ><span class="glyphicon glyphicon-share-alt"></span>Chuyển tiền ra ngoài</a>
 			<hr>
+            @endif
             <div class="row">
             	@if(count($wallets) != 0)
                 <table id="table1" class="table table-hover table-striped">

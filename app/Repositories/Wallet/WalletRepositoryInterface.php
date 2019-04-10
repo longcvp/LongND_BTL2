@@ -16,5 +16,7 @@ interface WalletRepositoryInterface
 	public function changeTransferWallet($data);
 
 	public function updateMoneyTransfer($data);
+
+	public function updateMoneyTransaction($data);
 	
 }

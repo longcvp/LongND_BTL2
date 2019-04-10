@@ -1,12 +1,12 @@
 @extends('_layout.layout')
 @section('title')
-Giao dịch chuyển tiền nội bộ
+Giao dịch chuyển tiền bên ngoài
 @endsection
 @section('content')
 	<div class="conten-wrapper">
 		<section class="content container-fluid">
 			<div class="container">
-				<h2>Giao dịch chuyển tiền</h2>
+				<h2>Giao dịch chuyển tiền ngoài tài khoản</h2>
 				<form class="form-horizontal" method="POST" action="{{ route('wallets.post_transfer') }}" enctype="multipart/form-data" >
                         {{ csrf_field() }}
                     <div class="form-group">
@@ -14,7 +14,7 @@ Giao dịch chuyển tiền nội bộ
                     </div>
                     <input type="hidden" name="id" value="{{ Auth::user()->id }}">
                     <input type="hidden" name="type" value="1">
-                    <input type="hidden" name="trans" value="1">
+                    <input type="hidden" name="trans" value="2">
                     <div class="form-group{{ $errors->has('from_wallet') ? ' has-error' : '' }}" id="from_trans">
                         <label for="from_wallet" class="col-md-4 control-label">Ví chuyển tiền<span class="error">*</span></label>
 
@@ -34,16 +34,15 @@ Giao dịch chuyển tiền nội bộ
                             @endif
                         </div>
                     </div>                       
-                    <div class="form-group{{ $errors->has('to_wallet') ? ' has-error' : '' }}" id="to_trans">
-                        <label for="to_wallet" class="col-md-4 control-label">Ví nhận tiền<span class="error">*</span></label>
+                    <div class="form-group{{ $errors->has('ssid') ? ' has-error' : '' }}" id="to_trans">
+                        <label for="ssid" class="col-md-4 control-label">SSID Ví nhận tiền<span class="error">*</span></label>
 
                         <div class="col-md-6">
-                            <select class="selectpicker form-control" name="to_wallet" id="to_wallet" required>
-                                <option selected value="">Chọn ví chuyển đi trước </option>
-                            </select>
-                            @if ($errors->has('to_wallet'))
+                            <input id="ssid" type="text" min = "0" step="10000" class="form-control" name="ssid" value="{{ old('ssid') }}" required autofocus>
+
+                            @if ($errors->has('ssid'))
                                 <span class="help-block">
-                                    <strong>{{ $errors->first('to_wallet') }}</strong>
+                                    <strong>{{ $errors->first('ssid') }}</strong>
                                 </span>
                             @endif
                         </div>
@@ -126,16 +125,15 @@ Giao dịch chuyển tiền nội bộ
                         },
                     dataType   :'JSON',
                     url:'/transfer/change/user',
-                    data:{id: {{ Auth::id() }} ,from_wallet: from_wallet, type: 1},
+                    data:{id: {{ Auth::id() }} ,from_wallet: from_wallet, type : 2},
                     success:function(result){
                         $("#so_du").show();
                         console.log(result);
                         $('#money_from').val(result[1]);
-                        $('#to_wallet').html(result[0]);
                     }
                 }); 
             }else{
-                $('#to_wallet').html('<option value="">Chọn ví chuyển đi trước </option>');
+                $("#so_du").hide();
             }
         });
 

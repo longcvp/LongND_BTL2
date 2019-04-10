@@ -10,7 +10,7 @@ use App\Http\Requests\TransferRequest;
 use App\Http\Controllers\Controller;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\Wallet\WalletRepositoryInterface;
-use App\Repositories\Transaction\TransactionEloquentRepository;
+use App\Repositories\Transaction\TransactionRepositoryInterface;
 
 
 class WalletController extends Controller
@@ -24,7 +24,7 @@ class WalletController extends Controller
 
 
     public function __construct(UserRepositoryInterface $user, WalletRepositoryInterface $wallet, 
-                                TransactionEloquentRepository $transaction)
+                                TransactionRepositoryInterface $transaction)
     {
         $this->user = $user;
         $this->wallet = $wallet;
@@ -88,8 +88,6 @@ class WalletController extends Controller
         } else {
            return view('wallets.edit', ['wallet' => $wallet]);
         }
-        
-
     }
 
     /**
@@ -123,17 +121,23 @@ class WalletController extends Controller
 
     }
 
-    public function getTransfer()
+    public function getTransfer($type)
     {
         $wallets = $this->wallet->getWalletUser(Auth::id());
-        return view('wallets.transfer', ['wallets' => $wallets]);
+        if ($type == IN) {
+            return view('wallets.transfer', ['wallets' => $wallets]);
+        } else {
+            return view('wallets.transfer_out', ['wallets' => $wallets]);
+        }
+        
+        
     }
 
     public function postTransfer(TransferRequest $req)
     {
-        $this->wallet->updateMoneyTransfer($req);
-        $this->transaction->createTransfer($req);
-        return redirect()->route('wallets.index')->with('success', 'Giao dịch thành công');
+        $toWalletId = $this->wallet->updateMoneyTransfer($req);
+        $this->transaction->createTransfer($req, $toWalletId);
+        return redirect()->route('transactions.index')->with('success', 'Giao dịch thành công');
     }
 
     public function changeTransfer(Request $req)
