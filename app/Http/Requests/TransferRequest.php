@@ -33,7 +33,7 @@ class TransferRequest extends FormRequest
         $codeCheck = $data->code;
         $money = $data->money;
         $ssid = $req->ssid;
-        if ($req->type == 1) {
+        if ($req->trans == 1) {
             return [
                 'code' => ['required',function ($attribute, $code, $fail) use ($codeCheck) {
                                         if (! Hash::check($code, $codeCheck)) {

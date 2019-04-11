@@ -12,9 +12,9 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- jquery ui -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-    <!-- Google Font -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
           @yield('css')
@@ -54,10 +54,10 @@
                 @guest           
                 @else
                 <ul class="nav navbar-nav">
-                  <li><a data-toggle="tab" href="{{ route('users.index') }}">Thông tin cá nhân</a></li>
-                  <li><a data-toggle="tab"  href="{{ route('wallets.index') }}">Quản lý ví</a></li>
-                  <li><a data-toggle="tab"  href="{{ route('categories.index') }}">Danh mục chi tiêu</a></li>
-                  <li><a data-toggle="tab"  href="{{ route('transactions.index') }}">Quản lý giao dịch</a></li>
+                  <li><a href="{{ route('users.index') }}">Thông tin cá nhân</a></li>
+                  <li><a href="{{ route('wallets.index') }}">Quản lý ví</a></li>
+                  <li><a href="{{ route('categories.index') }}">Danh mục chi tiêu</a></li>
+                  <li><a href="{{ route('transactions.index') }}">Quản lý giao dịch</a></li>
                 </ul>             
                 @endguest
                 <ul class="nav navbar-nav navbar-right">

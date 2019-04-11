@@ -42,12 +42,16 @@ Route::group(['middleware' => 'auth'], function() {
 
         Route::post('/password/reset/{user}', 'AuthController@postResetPassword')->name('password.request');
 
-//Ví cá nhân
+        //Ví cá nhân
         Route::get('/wallets', 'WalletController@index')->name('wallets.index');
 
         Route::get('/wallets/create', 'WalletController@create')->name('wallets.create');
 
         Route::post('/wallets', 'WalletController@store')->name('wallets.store');
+
+        Route::get('wallets/{wallet}/edit', 'WalletController@edit')->name('wallets.edit');
+
+        Route::patch('wallets/{wallet}', 'WalletController@update')->name('wallets.update');
 
         Route::delete('wallets/{wallet}', 'WalletController@destroy')->name('wallets.destroy');
 
@@ -59,7 +63,7 @@ Route::group(['middleware' => 'auth'], function() {
 
 
 
-//danh mục cá nhân
+        //danh mục cá nhân
         Route::get('/categories', 'CategoryController@index')->name('categories.index');
 
         Route::get('/categories/create', 'CategoryController@create')->name('categories.create');
@@ -74,7 +78,7 @@ Route::group(['middleware' => 'auth'], function() {
 
         Route::post('/categories/change/user', 'CategoryController@changeType')->name('wallets.change_type');
 
-//Giao dịch cá nhân
+        //Giao dịch cá nhân
         Route::get('/transactions', 'TransactionController@index')->name('transactions.index');
 
         Route::get('/transactions/create', 'TransactionController@create')
@@ -86,7 +90,14 @@ Route::group(['middleware' => 'auth'], function() {
 
         Route::patch('/transactions/{wallet}', 'TransactionController@update')->name('transactions.update');
 
-        Route::delete('/transactions/{wallet}', 'TransactionController@destroy')->name('transactions.destroy');        
+        Route::delete('/transactions/{wallet}', 'TransactionController@destroy')->name('transactions.destroy');
+
+        Route::get('/transactions/show/per-day', 'TransactionController@showPerDay')->name('transactions.per-day');
+
+        Route::get('/transactions/show/per-month', 'TransactionController@showPerMonth')->name('transactions.per-month');
+
+        Route::post('/excel', 'TransactionController@excel')->name('transactions.excel');      
+
     });
 
 });

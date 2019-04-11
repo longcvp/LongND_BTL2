@@ -50,7 +50,7 @@ class Transaction extends Model
             'to_wallet_id' => $toWallet,
             'type' => $data->type,
             'money' => $data->money,
-            'user_id' => $data->user_id
+            'user_id' => $data->id
         ];
 
         return $this->create($newData);
@@ -59,5 +59,35 @@ class Transaction extends Model
     public function getDataTransaction($id)
     {
         return $this->where('user_id', $id)->paginate(8);
+    }
+
+    public function getTransactionCategory($id)
+    {
+        return $this->where('user_id', $id)
+                    ->where('category_id', '<>', 0)
+                    ->paginate(8);
+    }
+
+    public function getTransfer($id)
+    {
+        return $this->where('user_id', $id)
+                    ->where('category_id', 0)
+                    ->paginate(8);
+    }
+
+    public function getDataByDay($startDate, $afterDate, $userId)
+    {
+        return $this->where('user_id', $userId)
+                    ->where('created_at', '>=', $startDate)
+                    ->where('created_at', '<', $afterDate)
+                    ->get();
+    }
+
+    public function getDataByMonth($month, $year, $userId)
+    {
+        return $this->whereMonth('created_at',$month)
+                    ->whereYear('created_at',$year)
+                    ->where('user_id',$userId)
+                    ->get();
     }
 }

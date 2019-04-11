@@ -68,4 +68,19 @@ class CategoryEloquentRepository extends EloquentRepository implements CategoryR
         }
         
     }
+
+    public function getRootCatgory($userId)
+    {
+        return $this->_model->getRootCatgory($userId);
+    }
+
+    public function getChildId($userId, $id)
+    {
+        $data = array();
+        $childs = $this->_model->getChildId($userId, $id);
+        foreach ($childs as $value) {
+            $data[] = $value->id;
+        }
+        return $data;
+    }
 }

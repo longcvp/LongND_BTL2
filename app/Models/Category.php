@@ -64,4 +64,14 @@ class Category extends Model
     {
         return $this->where('user_id', $data->user_id)->where('type', $data->type)->where('parent_id', '<>', ROOT_CATEGORY)->get();      
     }    
+
+    public function getRootCatgory($userId)
+    {
+        return $this->where('user_id', $userId)->where('parent_id', ROOT_CATEGORY)->get(); 
+    }
+
+    public function getChildId($userId, $id)
+    {
+        return $this->where('user_id', $userId)->where('parent_id', $id)->get();
+    }
 }

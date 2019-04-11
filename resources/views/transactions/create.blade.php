@@ -65,7 +65,7 @@ Thêm giao dịch thu chi danh mục
                         <label for="money_from" class="col-md-4 control-label">Số dư tài khoản <span class="error">*</span></label>
 
                         <div class="col-md-6">
-                            <input type="number" class="form-control" name="money_from" id="money_from" value="" disabled>
+                            <input type="number" class="form-control" name="money_from" id="money_from" value="{{ old('money_from') }}" readonly>
 
                             @if ($errors->has('money_from'))
                                 <span class="help-block">
@@ -148,8 +148,6 @@ Thêm giao dịch thu chi danh mục
                 $('#parent_id').html('<option value="">Chọn thể loại danh mục thu/chi trước </option>');
             }
         });
-
-        $("#so_du").hide();
         $("select[name='from_wallet']").on('change',function() {
             var from_wallet = $(this).val();  
             if(from_wallet != 0){
@@ -162,7 +160,6 @@ Thêm giao dịch thu chi danh mục
                     url:'/transfer/change/user',
                     data:{id: {{ Auth::id() }} ,from_wallet: from_wallet, type : 2},
                     success:function(result){
-                        $("#so_du").show();
                         $('#money_from').val(result[1]);
                     }
                 }); 

@@ -52,7 +52,7 @@ Giao dịch chuyển tiền nội bộ
                         <label for="money_from" class="col-md-4 control-label">Số dư tài khoản <span class="error">*</span></label>
 
                         <div class="col-md-6">
-                            <input type="number" class="form-control" name="money_from" id="money_from" value="" disabled>
+                            <input type="number" class="form-control" name="money_from" id="money_from" value="{{ old('money_from') }}" readonly>
 
                             @if ($errors->has('money_from'))
                                 <span class="help-block">
@@ -115,7 +115,6 @@ Giao dịch chuyển tiền nội bộ
 <script type="text/javascript">
    
     $(document).ready(function () {
-        $("#so_du").hide();
         $("select[name='from_wallet']").on('change',function() {
             var from_wallet = $(this).val();  
             if(from_wallet != 0){
@@ -128,7 +127,6 @@ Giao dịch chuyển tiền nội bộ
                     url:'/transfer/change/user',
                     data:{id: {{ Auth::id() }} ,from_wallet: from_wallet, type: 1},
                     success:function(result){
-                        $("#so_du").show();
                         console.log(result);
                         $('#money_from').val(result[1]);
                         $('#to_wallet').html(result[0]);

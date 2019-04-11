@@ -129,8 +129,6 @@ class WalletController extends Controller
         } else {
             return view('wallets.transfer_out', ['wallets' => $wallets]);
         }
-        
-        
     }
 
     public function postTransfer(TransferRequest $req)
