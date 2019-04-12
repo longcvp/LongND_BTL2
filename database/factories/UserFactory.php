@@ -1,6 +1,9 @@
 <?php
 
-use App\User;
+use App\Models\User;
+use App\Models\Information;
+use App\Models\Wallet;
+use App\Models\Category;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
@@ -17,10 +20,49 @@ use Faker\Generator as Faker;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'email_verified_at' => now(),
-        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        'remember_token' => Str::random(10),
+        'username' => $faker->word,
+        'email' => $faker->unique->freeEmail,
+        'active' => ACTIVE,
+        'reset_password' => NO_RESET_PASS,
+        'password' => bcrypt('123456'), // password
     ];
 });
+
+$factory->define(Information::class, function (Faker $faker) {
+    return [
+    	'name' => $faker->name,
+        'phone' => $faker->e164PhoneNumber,
+        'avatar' => 'images/avatar/default.JPG',
+        'address' => $faker->address,
+        'gender' => $faker->numberBetween($min = 1, $max = 2),
+        'birthday' => $faker->date($format = 'Y-m-d', $max = 'now'),
+        'user_id' => function() {
+            return factory(App\Models\User::class)->create()->id;
+        },
+    ];
+});
+
+
+$factory->define(Wallet::class, function (Faker $faker) {
+    return [
+    	'name' => $faker->name,
+        'code' => bcrypt('123456'),
+        'reset_code' => NO_RESET_PASS,
+        'ssid' => '1000'.(string)$faker->numberBetween($min = 10000000, $max = 99999999),
+        'money' => '100000000',
+        'user_id' => function() {
+            return factory(App\Models\User::class)->create()->id;
+        },
+    ];
+});
+
+
+$factory->define(Category::class, function (Faker $faker) {
+    return [
+    	'name' => $faker->name,
+        'user_id' => $faker->numberBetween($min = 1, $max = 3),
+        'type' => $faker->numberBetween($min = 1, $max = 2),
+        'parent_id' => $faker->numberBetween($min = 1, $max = 6),
+    ];
+});
+
