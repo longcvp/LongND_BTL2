@@ -27,10 +27,10 @@ class ChangePasswordRequest extends FormRequest
     {
         $request = request();
         $id = $request->id;
-        $old_password = $request->old_password;
+        $oldPassword = $request->old_password;
         return [
-                'old_password' => function ($attribute, $old_password, $fail) {
-                                    if (! Hash::check($old_password, Auth::user()->password)) {
+                'old_password' => function ($attribute, $oldPassword, $fail) {
+                                    if (! Hash::check($oldPassword, Auth::user()->password)) {
                                         $fail('Mật khẩu cũ bạn không đúng');
                                     }
                                 },

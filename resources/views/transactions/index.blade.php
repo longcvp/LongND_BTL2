@@ -15,15 +15,15 @@ Quản lý các giao dịch cá nhân
               <p>{{ session('error') }}</p>
         </div>
         @endif
-    	<div class="container">
-    		<h2>Quản lý các giao dịch của {{ Auth::user()->infomation->name }}</h2>
-			<hr>
+        <div class="container">
+            <h2>Quản lý các giao dịch của {{ Auth::user()->infomation->name }}</h2>
+            <hr>
             <div class="form-group">
-    			<a href="{{ route('transactions.create') }}" type="button" class="btn btn-primary">Thanh toán Thu/Chi</a>
+                <a href="{{ route('transactions.create') }}" type="button" class="btn btn-primary">Thanh toán Thu/Chi</a>
                 <a href="{{ route('wallets.transfer', IN ) }}" type="button" class="btn btn-success" ><span class="glyphicon glyphicon-share-alt"></span>Chuyển tiền nội bộ</a>
                 <a href="{{ route('wallets.transfer', OUT ) }}" type="button" class="btn btn-danger" ><span class="glyphicon glyphicon-share-alt"></span>Chuyển tiền ra ngoài</a>
             </div>
-			<hr>
+            <hr>
             <form class="form-horizontal" method="POST" action="{{ route('transactions.excel') }}" enctype="multipart/form-data" >
                         {{ csrf_field() }}
                 <div class="form-group" id="root_category">
@@ -53,7 +53,7 @@ Quản lý các giao dịch cá nhân
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane fade in active" id="review">
                     <div class="row">
-                	@if(count($transactions) != 0)
+                    @if(count($transactions) != 0)
                         <h3>Tổng quan giao dịch</h3>
                         <table id="table1" class="table table-hover table-striped">
                             <thead>
@@ -264,7 +264,7 @@ Quản lý các giao dịch cá nhân
                 </section>                      
                 </div>                
             </div>
-    	</div>
+        </div>
     </section>
 </div>
 @endsection

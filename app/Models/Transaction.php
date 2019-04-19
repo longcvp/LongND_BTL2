@@ -11,22 +11,22 @@ class Transaction extends Model
 {
     protected $table = 'transactions';
     protected $fillable = [
-    	'category_id', 'from_wallet_id', 'to_wallet_id', 'money', 'type', 'user_id'
+        'category_id', 'from_wallet_id', 'to_wallet_id', 'money', 'type', 'user_id'
     ];
 
     public function category()
     {
-    	return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     public function fromWallet()
     {
-    	return $this->belongsTo(Wallet::class, 'from_wallet_id');
+        return $this->belongsTo(Wallet::class, 'from_wallet_id');
     }
 
     public function  toWallet()
     {
-    	return $this->belongsTo(Wallet::class, 'to_wallet_id');
+        return $this->belongsTo(Wallet::class, 'to_wallet_id');
     }
 
     public function createTransfer($data, $toWalletId = 0)

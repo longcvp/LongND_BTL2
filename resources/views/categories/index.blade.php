@@ -15,13 +15,13 @@ Quản lý danh mục chi tiêu cá nhân
               <p>{{ session('error') }}</p>
         </div>
         @endif
-    	<div class="container">
-    		<h2>Quản lý danh mục chi tiêu của {{ Auth::user()->infomation->name }}</h2>
-			<hr>
-			<a href="{{ route('categories.create') }}" type="button" class="btn btn-primary">Tạo danh mục mới</a>
-			<hr>
+        <div class="container">
+            <h2>Quản lý danh mục chi tiêu của {{ Auth::user()->infomation->name }}</h2>
+            <hr>
+            <a href="{{ route('categories.create') }}" type="button" class="btn btn-primary">Tạo danh mục mới</a>
+            <hr>
             <div class="row">
-            	@if(count($categories) != 0)
+                @if(count($categories) != 0)
                 <table id="table1" class="table table-hover table-striped">
                     <thead>
                         <tr>
@@ -57,7 +57,7 @@ Quản lý danh mục chi tiêu cá nhân
                 <p>Không có thông tin danh mục</p>
                 @endif
             </div>
-    	</div>
+        </div>
     </section>
 </div>
 @endsection

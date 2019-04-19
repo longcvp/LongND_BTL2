@@ -40,7 +40,6 @@ class CheckNameRule implements Rule
            foreach ($categories as $category) {
                 $arrayName[] = $category->name;
             }
-
             return !in_array($value,$arrayName);        
         }
     }

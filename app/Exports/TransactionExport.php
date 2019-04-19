@@ -16,19 +16,23 @@ class TransactionExport implements FromCollection, WithMapping, WithHeadings
     */
     public function collection()
     {
-		return Transaction::where('user_id', Auth::id())
-           	->where('created_at', '>', Carbon::now()->subDays(30))
-           	->where('created_at', '<=', Carbon::now())
-           	->get();
+        return Transaction::where('user_id', Auth::id())
+            ->where('created_at', '>', Carbon::now()->subDays(30))
+            ->where('created_at', '<=', Carbon::now())
+            ->get();
     }
 
     public function map($transaction): array
     {
         return [
-            ($transaction->type == TRANSFER) ? 'Chuyển tiền' : (($transaction->type == PAY) ? 'Thanh toán chi tiêu' : 'Nhận tiền'),
-            ($transaction->type == TRANSFER) ? 'Không có' : $transaction->category->name.'-'.$transaction->category->nameParent->name,
-            ($transaction->type == RECEIVE) ? 'Không có' : $transaction->fromWallet->name.'-'.$transaction->fromWallet->user->infomation->name,
-            ($transaction->type == PAY) ? 'Không có' : $transaction->toWallet->name.'-'.$transaction->toWallet->user->infomation->name,
+            ($transaction->type == TRANSFER) ? 'Chuyển tiền' : 
+            (($transaction->type == PAY) ? 'Thanh toán chi tiêu' : 'Nhận tiền'),
+            ($transaction->type == TRANSFER) ? 'Không có' : 
+            $transaction->category->name.'-'.$transaction->category->nameParent->name,
+            ($transaction->type == RECEIVE) ? 'Không có' : 
+            $transaction->fromWallet->name.'-'.$transaction->fromWallet->user->infomation->name,
+            ($transaction->type == PAY) ? 'Không có' : 
+            $transaction->toWallet->name.'-'.$transaction->toWallet->user->infomation->name,
             (number_format($transaction->money). ' vnđ'),
             date('d-m-Y H:i:s', strtotime($transaction->updated_at)),
         ];

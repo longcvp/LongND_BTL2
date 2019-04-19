@@ -8,19 +8,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Wallet extends Model
 {
-	use SoftDeletes;
+    use SoftDeletes;
     
     protected $table ='wallets';
 
     protected $fillable = [
-    	'name', 'user_id', 'code', 'reset_code', 'money', 'ssid'
+        'name', 'user_id', 'code', 'reset_code', 'money', 'ssid'
     ];
 
-	protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at'];
 
     public function user()
     {
-    	return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function getWalletByUserId($user_id)

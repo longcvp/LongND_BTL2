@@ -3,8 +3,8 @@ namespace App\Repositories\Active;
 
 interface ActiveRepositoryInterface
 {
-	public function getUserByToken($token);
+    public function getUserByToken($token);
 
-	public function deleteToken($token);
+    public function deleteToken($token);
 
 }

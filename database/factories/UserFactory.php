@@ -30,7 +30,7 @@ $factory->define(User::class, function (Faker $faker) {
 
 $factory->define(Information::class, function (Faker $faker) {
     return [
-    	'name' => $faker->name,
+        'name' => $faker->name,
         'phone' => $faker->e164PhoneNumber,
         'avatar' => 'images/avatar/default.JPG',
         'address' => $faker->address,
@@ -45,7 +45,7 @@ $factory->define(Information::class, function (Faker $faker) {
 
 $factory->define(Wallet::class, function (Faker $faker) {
     return [
-    	'name' => $faker->name,
+        'name' => $faker->name,
         'code' => bcrypt('123456'),
         'reset_code' => NO_RESET_PASS,
         'ssid' => '1000'.(string)$faker->numberBetween($min = 10000000, $max = 99999999),
@@ -59,7 +59,7 @@ $factory->define(Wallet::class, function (Faker $faker) {
 
 $factory->define(Category::class, function (Faker $faker) {
     return [
-    	'name' => $faker->name,
+        'name' => $faker->name,
         'user_id' => $faker->numberBetween($min = 1, $max = 3),
         'type' => $faker->numberBetween($min = 1, $max = 2),
         'parent_id' => $faker->numberBetween($min = 1, $max = 6),

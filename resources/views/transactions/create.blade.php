@@ -3,11 +3,11 @@
 Thêm giao dịch thu chi danh mục
 @endsection
 @section('content')
-	<div class="conten-wrapper">
-		<section class="content container-fluid">
-			<div class="container">
-				<h2>Thêm giao dịch mới</h2>
-				<form class="form-horizontal" method="POST" action="{{ route('transactions.store') }}" enctype="multipart/form-data" >
+    <div class="conten-wrapper">
+        <section class="content container-fluid">
+            <div class="container">
+                <h2>Thêm giao dịch mới</h2>
+                <form class="form-horizontal" method="POST" action="{{ route('transactions.store') }}" enctype="multipart/form-data" >
                         {{ csrf_field() }}
                     <div class="form-group">
                         <p style="text-align: center;"><span class="error">* required field</span></p>
@@ -105,14 +105,14 @@ Thêm giao dịch thu chi danh mục
                             <button type="submit" class="btn btn-primary">
                                 Tạo giao dịch
                             </button>
-							<a href="{{ route("categories.index") }}" type="button" class="btn btn-info">Quay lại</a>
+                            <a href="{{ route("categories.index") }}" type="button" class="btn btn-info">Quay lại</a>
                         </div>
 
                     </div>
                  </form>
             </div>
-		</section>	
-	</div>
+        </section>  
+    </div>
 @endsection
 @section('css')
 <style type="text/css">

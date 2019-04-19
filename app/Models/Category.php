@@ -9,24 +9,24 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Category extends Model
 {
 
-	use SoftDeletes;
+    use SoftDeletes;
 
-	protected $table = 'categories';
+    protected $table = 'categories';
 
     protected $fillable = [
-    	'name', 'user_id', 'type', 'parent_id'
+        'name', 'user_id', 'type', 'parent_id'
     ];
     
-	protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at'];
 
     public function user()
     {
-    	return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function getCateByUser($id)
     {
-    	return $this->where('user_id', $id)->paginate(8);
+        return $this->where('user_id', $id)->paginate(8);
     }
 
     public function getRootCategoryUser($data)
@@ -38,7 +38,7 @@ class Category extends Model
     {
         $newData = [
             'name' => $data->name,
-            'user_id' => $data->id,
+            'user_id' => $data->user_id,
             'type' => $data->type,
             'parent_id' => $data->parent_id
         ];

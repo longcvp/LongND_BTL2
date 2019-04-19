@@ -16,9 +16,9 @@ class ActiveMail extends Mailable
      *
      * @return void
      */
-    public function __construct($active_link, $name)
+    public function __construct($activeLink, $name)
     {
-        $this->active_link = $active_link;
+        $this->activeLink = $activeLink;
         $this->name = $name;
     }
 
@@ -32,7 +32,7 @@ class ActiveMail extends Mailable
         return $this->subject('Kích hoạt tài khoản mới')
                     ->view('mail.active')
                     ->with([
-                        'active_link' => $this->active_link,
+                        'active_link' => $this->activeLink,
                         'name' => $this->name
                     ]);
     }

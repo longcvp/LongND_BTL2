@@ -32,7 +32,7 @@ class TransactionRequest extends FormRequest
         $codeCheck = $data->code;
         $money = $data->money;
         return [
-            'code' => ['required',function ($attribute, $code, $fail) use ($codeCheck) {
+            'code' => ['required', function ($attribute, $code, $fail) use ($codeCheck) {
                                         if (! Hash::check($code, $codeCheck)) {
                                             $fail('Mã bí mật không đúng');
                                         }

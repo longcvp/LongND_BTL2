@@ -16,9 +16,9 @@ class ResetPassMail extends Mailable
      *
      * @return void
      */
-    public function __construct($active_link, $username, $password)
+    public function __construct($activeLink, $username, $password)
     {
-        $this->active_link = $active_link;
+        $this->activeLink = $activeLink;
         $this->username = $username;        
         $this->password = $password;        
         
@@ -34,7 +34,7 @@ class ResetPassMail extends Mailable
         return $this->subject('Đặt lại mật khẩu')
                     ->view('mail.reset')
                     ->with([
-                        'active_link' => $this->active_link,
+                        'activeLink' => $this->activeLink,
                         'username' => $this->username,
                         'password' => $this->password,
                     ]);

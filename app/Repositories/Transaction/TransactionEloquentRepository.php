@@ -2,7 +2,6 @@
 namespace App\Repositories\Transaction;
 
 use App\Models\Transaction;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\EloquentRepository;
@@ -23,7 +22,7 @@ class TransactionEloquentRepository extends EloquentRepository implements Transa
 
     public function createTransfer($data, $toWalletId = 0)
     {
-    	return $this->_model->createTransfer($data, $toWalletId);
+        return $this->_model->createTransfer($data, $toWalletId);
     }
 
     public function getTransactionUser($userId)

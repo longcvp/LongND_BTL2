@@ -3,16 +3,16 @@
 Đặt lại mật khẩu
 @endsection
 @section('content')
-	<div class="conten-wrapper">
+    <div class="conten-wrapper">
         <section class="content container-fluid">
-			<div class="container">
-				<h2>Đặt lại mật khẩu</h2>
-				@if($errors->has('errorlogin'))
-					<div class="alert alert-danger">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						{{ $errors->first('errorlogin') }}
-					</div>
-				@endif
+            <div class="container">
+                <h2>Đặt lại mật khẩu</h2>
+                @if($errors->has('errorlogin'))
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        {{ $errors->first('errorlogin') }}
+                    </div>
+                @endif
                 <div class="panel panel-default">
                     <div class="panel-heading">Đặt lại mật khẩu</div>
 
@@ -57,26 +57,26 @@
                                 </div>
 
                             </div>
-                            </form>
-                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>
     </div>
 @endsection
 @section('css')
-	<style type="text/css">
+    <style type="text/css">
         body {
           margin: 0;
           padding: 0;
           background-color: #17a2b8;
           height: 100vh;
         }
-		h2 {
-			text-align: center;
-		}
+        h2 {
+            text-align: center;
+        }
         .error {
             color: red;
         }
-	</style>
+    </style>
 @endsection

@@ -35,7 +35,7 @@ class TransferRequest extends FormRequest
         $ssid = $req->ssid;
         if ($req->trans == 1) {
             return [
-                'code' => ['required',function ($attribute, $code, $fail) use ($codeCheck) {
+                'code' => ['required', function ($attribute, $code, $fail) use ($codeCheck) {
                                         if (! Hash::check($code, $codeCheck)) {
                                             $fail('Mã bí mật không đúng');
                                         }

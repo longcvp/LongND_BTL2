@@ -49,7 +49,7 @@ class AuthController extends Controller
         } else {
             $errors = new MessageBag(['errorlogin' => 'Tên đăng nhập hoặc mật khẩu không đúng']);
             return redirect()->back()->withInput()->withErrors($errors);
-        }       
+        }
     }
 
     public function getSignup()
@@ -99,7 +99,7 @@ class AuthController extends Controller
             $this->user->authLogin($data->user_id);
             $this->active->deleteToken($token);
             return redirect()->route('login.index')->with('success', 'Xác thực đăng kí thành công! Bạn có thể đăng nhập');
-        }   
+        }
     }
 
     public function getReset()
