@@ -25,7 +25,7 @@ Tạo ví
                                 </span>
                             @endif
                         </div>
-                    </div>   
+                    </div>
                     <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
                         <label for="code" class="col-md-4 control-label">Mã bí mật <span class="error">*</span></label>
 
