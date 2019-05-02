@@ -18,7 +18,7 @@ class UserController extends Controller
     public function __construct(UserRepositoryInterface $user)
     {
         $this->user = $user;
-    }    
+    }
     /**
      * Display a listing of the resource.
      *
@@ -74,8 +74,6 @@ class UserController extends Controller
         } else {
             return view('users.edit');
         }
-        
-        
     }
 
     /**

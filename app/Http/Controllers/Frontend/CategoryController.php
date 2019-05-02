@@ -24,7 +24,7 @@ class CategoryController extends Controller
         $this->user = $user;
         $this->category = $category;
         $this->transaction = $transaction;
-    }  
+    }
 
     /**
      * Display a listing of the resource.

@@ -33,13 +33,18 @@ Giao dịch chuyển tiền nội bộ
                                 </span>
                             @endif
                         </div>
-                    </div>                       
+                    </div>
                     <div class="form-group{{ $errors->has('to_wallet') ? ' has-error' : '' }}" id="to_trans">
                         <label for="to_wallet" class="col-md-4 control-label">Ví nhận tiền<span class="error">*</span></label>
 
                         <div class="col-md-6">
                             <select class="selectpicker form-control" name="to_wallet" id="to_wallet" required>
                                 <option selected value="">Chọn ví chuyển đi trước </option>
+                                @foreach($wallets as $wallet)
+                                    <option value="{{ $wallet->id }}" @if ($wallet->id == old('to_wallet'))
+                                        selected 
+                                    @endif>{{ $wallet->name.'-'.$wallet->ssid }}</option>
+                                @endforeach
                             </select>
                             @if ($errors->has('to_wallet'))
                                 <span class="help-block">
@@ -78,7 +83,7 @@ Giao dịch chuyển tiền nội bộ
                         <label for="code" class="col-md-4 control-label">Mã bí mật (Nhập để thực hiện giao dịch) <span class="error">*</span></label>
 
                         <div class="col-md-6">
-                            <input id="code" type="password" class="form-control" name="code" value="{{ old('code') }}" required autofocus>
+                            <input id="code" type="password" class="form-control" name="code" required autofocus>
 
                             @if ($errors->has('code'))
                                 <span class="help-block">
@@ -86,7 +91,7 @@ Giao dịch chuyển tiền nội bộ
                                 </span>
                             @endif
                         </div>
-                    </div>                                                          
+                    </div>
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
                             <button type="submit" class="btn btn-primary">
@@ -113,8 +118,12 @@ Giao dịch chuyển tiền nội bộ
 @endsection
 @section('js')
 <script type="text/javascript">
-   
     $(document).ready(function () {
+        if ($("select[name='from_wallet']").val() != '') {
+            $("select[name='to_wallet'] option").show();
+        } else {
+            $("select[name='to_wallet'] option").hide();
+        }
         $("select[name='from_wallet']").on('change',function() {
             var from_wallet = $(this).val();  
             if(from_wallet != 0){
@@ -127,7 +136,6 @@ Giao dịch chuyển tiền nội bộ
                     url:'/transfer/change/user',
                     data:{id: {{ Auth::id() }} ,from_wallet: from_wallet, type: 1},
                     success:function(result){
-                        console.log(result);
                         $('#money_from').val(result[1]);
                         $('#to_wallet').html(result[0]);
                     }

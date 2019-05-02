@@ -34,7 +34,7 @@ class TransactionController extends Controller
         $this->wallet = $wallet;
         $this->transaction = $transaction;
         $this->category = $category;
-    }  
+    }
     /**
      * Display a listing of the resource.
      *
@@ -46,7 +46,12 @@ class TransactionController extends Controller
         $categoryTransactions = $this->transaction->getTransactionCategory(Auth::id());
         $moneyTransactions = $this->transaction->getTransferUser(Auth::id());
         $categories = $this->category->getRootCatgory(Auth::id());
-        return view('transactions.index', ['transactions' => $transactions, 'categoryTransactions' => $categoryTransactions, 'moneyTransactions' => $moneyTransactions, 'categories' => $categories]);
+        return view('transactions.index', [
+            'transactions' => $transactions, 
+            'categoryTransactions' => $categoryTransactions,
+            'moneyTransactions' => $moneyTransactions, 
+            'categories' => $categories
+         ]);
     }
 
     /**
