@@ -13,13 +13,13 @@ use App\Repositories\Transaction\TransactionRepositoryInterface;
 class CategoryController extends Controller
 {
     /**
-        repository 
-    */
+     * repository
+     */
     protected $user;
     protected $transaction;
     protected $category;
 
-    public function __construct(UserRepositoryInterface $user, CategoryRepositoryInterface $category,TransactionRepositoryInterface $transaction)
+    public function __construct(UserRepositoryInterface $user, CategoryRepositoryInterface $category, TransactionRepositoryInterface $transaction)
     {
         $this->user = $user;
         $this->category = $category;
@@ -50,7 +50,7 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(CategoryRequest $req)
@@ -62,7 +62,7 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -73,25 +73,25 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         $category = $this->category->find($id);
-        $parentRoot = $this->category->getRootCategoryUser($category);
+        $parent_Root = $this->category->getRootCategoryUser($category);
         if ($category->user_id != Auth::id()) {
-           return redirect()->back();
+            return redirect()->back();
         } else {
-           return view('categories.edit', ['category' => $category, 'parentRoot' => $parentRoot]);
+            return view('categories.edit', ['category' => $category, 'parentRoot' => $parentRoot]);
         }
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(CategoryRequest $request, $id)
@@ -103,14 +103,14 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         $category = $this->category->find($id);
         if ($category->user_id != Auth::id()) {
-           return redirect()->back();
+            return redirect()->back();
         } else {
             $this->category->deleteCategory($id);
             return redirect()->route('categories.index')->with('success', 'Xóa thành công');
