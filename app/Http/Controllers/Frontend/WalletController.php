@@ -16,20 +16,20 @@ use App\Repositories\Transaction\TransactionRepositoryInterface;
 class WalletController extends Controller
 {
     /**
-        repository 
+        repository
     */
     protected $user;
     protected $wallet;
     protected $transaction;
 
 
-    public function __construct(UserRepositoryInterface $user, WalletRepositoryInterface $wallet, 
+    public function __construct(UserRepositoryInterface $user, WalletRepositoryInterface $wallet,
                                 TransactionRepositoryInterface $transaction)
     {
         $this->user = $user;
         $this->wallet = $wallet;
         $this->transaction = $transaction;
-    }  
+    }
     /**
      * Display a listing of the resource.
      *
@@ -143,5 +143,10 @@ class WalletController extends Controller
         $wallets = $this->wallet->changeTransferWallet($req);
         return response()->json($wallets)
                          ->header('Content-Type', 'JSON');
-    }  
+    }
+
+    public function change()
+    {
+        return 1;
+    }
 }
