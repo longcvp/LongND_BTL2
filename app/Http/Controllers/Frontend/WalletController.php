@@ -149,4 +149,9 @@ class WalletController extends Controller
     {
         return 1;
     }
+
+    public function add()
+    {
+        echo "dsdsd";
+    }
 }
