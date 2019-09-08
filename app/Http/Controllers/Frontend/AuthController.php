@@ -43,9 +43,9 @@ class AuthController extends Controller
     {
         $username = $req->username;
         $password = $req->password;
- 
+
         if ( Auth::attempt(['username' => $username, 'password' => $password])) {
-            return redirect()->route('users.index'); 
+            return redirect()->route('users.index');
         } else {
             $errors = new MessageBag(['errorlogin' => 'Tên đăng nhập hoặc mật khẩu không đúng']);
             return redirect()->back()->withInput()->withErrors($errors);
@@ -67,7 +67,7 @@ class AuthController extends Controller
         return redirect()->route('login.index')->with('success', 'Đăng kí thành công ! Mời bạn vào email của mình xác thực tài khoản sau đó đăng nhập');
     }
 
-    public function getLogOut() 
+    public function getLogOut()
     {
         Auth::logout();
         return redirect()->route('login.index');
@@ -80,7 +80,7 @@ class AuthController extends Controller
         } else {
             return view('users.change_password');
         }
-        
+
     }
 
     public function postResetPassword(ChangePasswordRequest $request, $id)
@@ -111,5 +111,10 @@ class AuthController extends Controller
     {
         $this->user->resetPass($req->email);
          return redirect()->route('login.index')->with('success', 'Đặt lại mật khẩu thành công! Kiểm tra email và đăng nhập');
+    }
+
+    public function branch1()
+    {
+        return 'demo1';
     }
 }
