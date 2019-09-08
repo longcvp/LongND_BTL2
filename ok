@@ -1,0 +1,64 @@
+[1mdiff --git a/resources/views/wallets/transfer.blade.php b/resources/views/wallets/transfer.blade.php[m
+[1mindex 2f4714e..b969f61 100644[m
+[1m--- a/resources/views/wallets/transfer.blade.php[m
+[1m+++ b/resources/views/wallets/transfer.blade.php[m
+[36m@@ -33,13 +33,18 @@[m [mGiao dịch chuyển tiền nội bộ[m
+                                 </span>[m
+                             @endif[m
+                         </div>[m
+[31m-                    </div>                       [m
+[32m+[m[32m                    </div>[m
+                     <div class="form-group{{ $errors->has('to_wallet') ? ' has-error' : '' }}" id="to_trans">[m
+                         <label for="to_wallet" class="col-md-4 control-label">Ví nhận tiền<span class="error">*</span></label>[m
+ [m
+                         <div class="col-md-6">[m
+                             <select class="selectpicker form-control" name="to_wallet" id="to_wallet" required>[m
+                                 <option selected value="">Chọn ví chuyển đi trước </option>[m
+[32m+[m[32m                                @foreach($wallets as $wallet)[m
+[32m+[m[32m                                    <option value="{{ $wallet->id }}" @if ($wallet->id == old('to_wallet'))[m
+[32m+[m[32m                                        selected[m[41m [m
+[32m+[m[32m                                    @endif>{{ $wallet->name.'-'.$wallet->ssid }}</option>[m
+[32m+[m[32m                                @endforeach[m
+                             </select>[m
+                             @if ($errors->has('to_wallet'))[m
+                                 <span class="help-block">[m
+[36m@@ -78,7 +83,7 @@[m [mGiao dịch chuyển tiền nội bộ[m
+                         <label for="code" class="col-md-4 control-label">Mã bí mật (Nhập để thực hiện giao dịch) <span class="error">*</span></label>[m
+ [m
+                         <div class="col-md-6">[m
+[31m-                            <input id="code" type="password" class="form-control" name="code" value="{{ old('code') }}" required autofocus>[m
+[32m+[m[32m                            <input id="code" type="password" class="form-control" name="code" required autofocus>[m
+ [m
+                             @if ($errors->has('code'))[m
+                                 <span class="help-block">[m
+[36m@@ -86,7 +91,7 @@[m [mGiao dịch chuyển tiền nội bộ[m
+                                 </span>[m
+                             @endif[m
+                         </div>[m
+[31m-                    </div>                                                          [m
+[32m+[m[32m                    </div>[m
+                     <div class="form-group">[m
+                         <div class="col-md-6 col-md-offset-4">[m
+                             <button type="submit" class="btn btn-primary">[m
+[36m@@ -113,8 +118,12 @@[m [mGiao dịch chuyển tiền nội bộ[m
+ @endsection[m
+ @section('js')[m
+ <script type="text/javascript">[m
+[31m-   [m
+     $(document).ready(function () {[m
+[32m+[m[32m        if ($("select[name='from_wallet']").val() != '') {[m
+[32m+[m[32m            $("select[name='to_wallet'] option").show();[m
+[32m+[m[32m        } else {[m
+[32m+[m[32m            $("select[name='to_wallet'] option").hide();[m
+[32m+[m[32m        }[m
+         $("select[name='from_wallet']").on('change',function() {[m
+             var from_wallet = $(this).val();  [m
+             if(from_wallet != 0){[m
+[36m@@ -127,7 +136,6 @@[m [mGiao dịch chuyển tiền nội bộ[m
+                     url:'/transfer/change/user',[m
+                     data:{id: {{ Auth::id() }} ,from_wallet: from_wallet, type: 1},[m
+                     success:function(result){[m
+[31m-                        console.log(result);[m
+                         $('#money_from').val(result[1]);[m
+                         $('#to_wallet').html(result[0]);[m
+                     }[m

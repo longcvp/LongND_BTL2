@@ -3,7 +3,6 @@ namespace App\Repositories\User;
     
 use File;
 use App\Models\User;
-use App\Models\ActiveUser;
 use App\Mail\ActiveMail;
 use App\Mail\ResetPassMail;
 use Illuminate\Support\Facades\Mail;
@@ -26,12 +25,12 @@ class UserEloquentRepository extends EloquentRepository implements UserRepositor
     public function createUser($data)
     {
         $token = $this->getToken();
-    	DB::transaction(function() use ($data, $token) {
-    		$newUser = $this->_model->saveUser($data);
+        DB::transaction(function() use ($data, $token) {
+            $newUser = $this->_model->saveUser($data);
             $newUser->active()->create(['active_code' => $token]);
-    		$newUser->infomation()->create(['name' => $data->name]);
+            $newUser->infomation()->create(['name' => $data->name]);
             $this->sendActiveMail($token, $newUser);
-    	});
+        });
     }
 
     public function editUser($data)
@@ -93,7 +92,7 @@ class UserEloquentRepository extends EloquentRepository implements UserRepositor
 
     protected function sendActiveMail($token, $newUser)
     {
-        $activeLink = 'quanlytaichinh.test/auth/login/'. $token;
+        $activeLink = url('/login/'). $token;
         try{
             Mail::to($newUser->email)
                     ->send(new ActiveMail($activeLink, $newUser->name));
@@ -123,11 +122,11 @@ class UserEloquentRepository extends EloquentRepository implements UserRepositor
 
     protected function sendResetMail($password, $user)
     {
-        $activeLink = 'quanlytaichinh.test/login';
-        try{
+        $activeLink = url('/login/');
+        try {
             Mail::to($user->email)
-                    ->send(new ResetPassMail($activeLink, $user->username, $password));
-        }catch (Exception $e){
+                  ->send(new ResetPassMail($activeLink, $user->username, $password));
+        } catch (Exception $e){
             throw new MailException('progress.sentMailError');
         }        
     }

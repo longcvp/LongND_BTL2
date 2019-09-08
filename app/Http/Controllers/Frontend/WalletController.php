@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Frontend;
 
 use Auth;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests\WalletRequest;
+use App\Http\Requests\TransferRequest;
 use App\Http\Controllers\Controller;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\Wallet\WalletRepositoryInterface;
+use App\Repositories\Transaction\TransactionRepositoryInterface;
 
 
 class WalletController extends Controller
@@ -17,13 +20,15 @@ class WalletController extends Controller
     */
     protected $user;
     protected $wallet;
+    protected $transaction;
 
 
-    public function __construct(UserRepositoryInterface $user, WalletRepositoryInterface $wallet)
+    public function __construct(UserRepositoryInterface $user, WalletRepositoryInterface $wallet, 
+                                TransactionRepositoryInterface $transaction)
     {
         $this->user = $user;
         $this->wallet = $wallet;
-
+        $this->transaction = $transaction;
     }  
     /**
      * Display a listing of the resource.
@@ -83,8 +88,6 @@ class WalletController extends Controller
         } else {
            return view('wallets.edit', ['wallet' => $wallet]);
         }
-        
-
     }
 
     /**
@@ -118,14 +121,27 @@ class WalletController extends Controller
 
     }
 
-    public function getTransfer()
+    public function getTransfer($type)
     {
         $wallets = $this->wallet->getWalletUser(Auth::id());
-        return view('wallets.transfer', ['wallets' => $wallets]);
+        if ($type == IN) {
+            return view('wallets.transfer', ['wallets' => $wallets]);
+        } else {
+            return view('wallets.transfer_out', ['wallets' => $wallets]);
+        }
     }
 
-    public function postTransfer()
+    public function postTransfer(TransferRequest $req)
     {
+        $toWalletId = $this->wallet->updateMoneyTransfer($req);
+        $this->transaction->createTransfer($req, $toWalletId);
+        return redirect()->route('transactions.index')->with('success', 'Giao dịch thành công');
+    }
 
+    public function changeTransfer(Request $req)
+    {
+        $wallets = $this->wallet->changeTransferWallet($req);
+        return response()->json($wallets)
+                         ->header('Content-Type', 'JSON');
     }  
 }

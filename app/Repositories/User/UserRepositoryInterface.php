@@ -3,14 +3,14 @@ namespace App\Repositories\User;
 
 interface UserRepositoryInterface
 {
-	public function createUser($data);
+    public function createUser($data);
 
-	public function editUser($data);
+    public function editUser($data);
 
-	public function authLogin($id);
+    public function authLogin($id);
 
-	public function resetPass($email);
+    public function resetPass($email);
 
-	public function changePass($id, $password);
+    public function changePass($id, $password);
 
 }

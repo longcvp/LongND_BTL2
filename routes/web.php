@@ -42,6 +42,7 @@ Route::group(['middleware' => 'auth'], function() {
 
         Route::post('/password/reset/{user}', 'AuthController@postResetPassword')->name('password.request');
 
+        //Ví cá nhân
         Route::get('/wallets', 'WalletController@index')->name('wallets.index');
 
         Route::get('/wallets/create', 'WalletController@create')->name('wallets.create');
@@ -54,9 +55,49 @@ Route::group(['middleware' => 'auth'], function() {
 
         Route::delete('wallets/{wallet}', 'WalletController@destroy')->name('wallets.destroy');
 
-        Route::get('transfer', 'WalletController@getTransfer')->name('wallets.transfer');
+        Route::get('/transfer/{type}', 'WalletController@getTransfer')->name('wallets.transfer');
 
-        Route::post('transfer', 'WalletController@postTransfer')->name('wallets.post_transfer');
+        Route::post('/transfer', 'WalletController@postTransfer')->name('wallets.post_transfer');
+
+        Route::post('/transfer/change/user', 'WalletController@changeTransfer')->name('wallets.change_transfer');
+
+
+
+        //danh mục cá nhân
+        Route::get('/categories', 'CategoryController@index')->name('categories.index');
+
+        Route::get('/categories/create', 'CategoryController@create')->name('categories.create');
+
+        Route::post('/categories', 'CategoryController@store')->name('categories.store');
+
+        Route::get('/categories/{wallet}/edit', 'CategoryController@edit')->name('categories.edit');
+
+        Route::patch('/categories/{wallet}', 'CategoryController@update')->name('categories.update');
+
+        Route::delete('/categories/{wallet}', 'CategoryController@destroy')->name('categories.destroy');
+
+        Route::post('/categories/change/user', 'CategoryController@changeType')->name('wallets.change_type');
+
+        //Giao dịch cá nhân
+        Route::get('/transactions', 'TransactionController@index')->name('transactions.index');
+
+        Route::get('/transactions/create', 'TransactionController@create')
+                ->name('transactions.create');
+
+        Route::post('/transactions', 'TransactionController@store')->name('transactions.store');
+
+        Route::get('/transactions/{wallet}/edit', 'TransactionController@edit')->name('transactions.edit');
+
+        Route::patch('/transactions/{wallet}', 'TransactionController@update')->name('transactions.update');
+
+        Route::delete('/transactions/{wallet}', 'TransactionController@destroy')->name('transactions.destroy');
+
+        Route::get('/transactions/show/per-day', 'TransactionController@showPerDay')->name('transactions.per-day');
+
+        Route::get('/transactions/show/per-month', 'TransactionController@showPerMonth')->name('transactions.per-month');
+
+        Route::post('/excel', 'TransactionController@excel')->name('transactions.excel');      
+
     });
 
 });

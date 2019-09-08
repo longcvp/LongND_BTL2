@@ -3,11 +3,11 @@
 Sửa thông tin cá nhân
 @endsection
 @section('content')
-	<div class="conten-wrapper">
-		<section class="content container-fluid">
-			<div class="container">
-				<h2>Cập nhật thông tin cá nhân</h2>
-				<form class="form-horizontal" method="POST" action="{{ route('users.update', Auth::user()->id) }}" enctype="multipart/form-data" >
+    <div class="conten-wrapper">
+        <section class="content container-fluid">
+            <div class="container">
+                <h2>Cập nhật thông tin cá nhân</h2>
+                <form class="form-horizontal" method="POST" action="{{ route('users.update', Auth::user()->id) }}" enctype="multipart/form-data" >
                         {{ method_field('PATCH') }}
                         {{ csrf_field() }}
                     <div class="form-group">
@@ -113,14 +113,14 @@ Sửa thông tin cá nhân
                             <button type="submit" class="btn btn-primary">
                                 Thay đổi
                             </button>
-							<a href="{{ route("users.index") }}" type="button" class="btn btn-info">Quay lại</a>
+                            <a href="{{ route("users.index") }}" type="button" class="btn btn-info">Quay lại</a>
                         </div>
 
                     </div>
                  </form>
             </div>
-		</section>	
-	</div>
+        </section>  
+    </div>
 @endsection
 @section('css')
 <style type="text/css">

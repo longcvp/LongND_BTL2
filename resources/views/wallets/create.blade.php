@@ -3,11 +3,11 @@
 Tạo ví
 @endsection
 @section('content')
-	<div class="conten-wrapper">
-		<section class="content container-fluid">
-			<div class="container">
-				<h2>Tạo ví cá nhân</h2>
-				<form class="form-horizontal" method="POST" action="{{ route('wallets.store') }}" enctype="multipart/form-data" >
+    <div class="conten-wrapper">
+        <section class="content container-fluid">
+            <div class="container">
+                <h2>Tạo ví cá nhân</h2>
+                <form class="form-horizontal" method="POST" action="{{ route('wallets.store') }}" enctype="multipart/form-data" >
                         {{ csrf_field() }}
                     <div class="form-group">
                         <p style="text-align: center;"><span class="error">* required field</span></p>
@@ -25,7 +25,7 @@ Tạo ví
                                 </span>
                             @endif
                         </div>
-                    </div>   
+                    </div>
                     <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
                         <label for="code" class="col-md-4 control-label">Mã bí mật <span class="error">*</span></label>
 
@@ -70,14 +70,14 @@ Tạo ví
                             <button type="submit" class="btn btn-primary">
                                 Tạo ví
                             </button>
-							<a href="{{ route("wallets.index") }}" type="button" class="btn btn-info">Quay lại</a>
+                            <a href="{{ route("wallets.index") }}" type="button" class="btn btn-info">Quay lại</a>
                         </div>
 
                     </div>
                  </form>
             </div>
-		</section>	
-	</div>
+        </section>  
+    </div>
 @endsection
 @section('css')
 <style type="text/css">

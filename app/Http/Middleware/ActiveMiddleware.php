@@ -17,14 +17,18 @@ class ActiveMiddleware
      */
     public function handle($request, Closure $next)
     {
-       if (!Auth::check()) {
+        if (!Auth::check()) {
             return view('login');
         } elseif (Auth::user()->active == 1) {
             return $next($request);
         } else {
             Auth::logout();
-            $errors = new MessageBag(['errorlogin' => 'Bạn chưa xác thực email! Mời bạn xác thực email sau đó đăng nhập']);
-            return redirect()->route('login.index')->withInput()->withErrors($errors);
+            $errors = new MessageBag([
+                'errorlogin' => 'Bạn chưa xác thực email!'
+            ]);
+            return redirect()->route('login.index')
+                            ->withInput()
+                            ->withErrors($errors);
         }
     }
 }

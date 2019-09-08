@@ -8,17 +8,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Wallet extends Model
 {
-	use SoftDeletes;
+    use SoftDeletes;
+    
+    protected $table ='wallets';
 
     protected $fillable = [
-    	'name', 'user_id', 'code', 'reset_code', 'money', 'ssid'
+        'name', 'user_id', 'code', 'reset_code', 'money', 'ssid'
     ];
 
-	protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at'];
 
     public function user()
     {
-    	return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function getWalletByUserId($user_id)
@@ -43,11 +45,11 @@ class Wallet extends Model
 
     public function getSSID()
     {
-        return '1000 ' . rand(1000,9999) . ' ' .rand(1000,9999);
+        return '1000' . rand(1000,9999).rand(1000,9999);
     }
 
     public function getWalletBySSID($ssid)
     {
-        return $this->where('ssid', $ssid)->count();
+        return $this->where('ssid', $ssid)->first();
     }
 }

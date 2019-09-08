@@ -2,7 +2,6 @@
 namespace App\Repositories\Active;
 
 use App\Models\ActiveUser;
-use Illuminate\Support\Facades\DB;
 use App\Repositories\EloquentRepository;
 
 class ActiveEloquentRepository extends EloquentRepository implements ActiveRepositoryInterface
@@ -19,7 +18,7 @@ class ActiveEloquentRepository extends EloquentRepository implements ActiveRepos
 
     public function getUserByToken($token)
     {
-    	return $this->_model->findByToken($token);
+        return $this->_model->findByToken($token);
     }
 
     public function deleteToken($token)

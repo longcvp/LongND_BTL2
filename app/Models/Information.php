@@ -8,18 +8,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Information extends Model
 {
-	use SoftDeletes;
+    use SoftDeletes;
 
-	protected $table = 'infomations';
-	
+    protected $table = 'infomations';
+    
     protected $fillable = [
         'name', 'phone', 'user_id', 'avatar', 'address', 'gender', 'birthday'
     ]; 
 
-	protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at'];
 
     public function user()
     {
-    	return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 }
