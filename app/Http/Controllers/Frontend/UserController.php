@@ -11,7 +11,7 @@ use App\Repositories\User\UserRepositoryInterface;
 class UserController extends Controller
 {
     /**
-        repository 
+        repository
     */
     protected $user;
 
@@ -98,5 +98,10 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function branch2($id)
+    {
+        return 1;
     }
 }
